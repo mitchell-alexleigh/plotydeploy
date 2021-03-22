@@ -1,34 +1,69 @@
-//set jason file name to a constant 
-const samples = "samples.json";
+function init() {
+    var selector = d3.select("#selDataset");
 
-/* //verify data is recived 
-d3.json(samples).then(function(data){
-    console.log(data);
-});  */
+    d3.json("samples.json").then((data) => {
+        console.log(data);
+        var sampleNames = data.names;
+        sampleNames.forEach((sample) => {
+        selector
+            .append("option")
+            .text(sample)
+            .property("value", sample);
+        });
+})}
 
-/* //only the wfreq, or the weekly belly button washing frequency, of each person into a new array
-//used map function to iterate through through all items 
-d3.json("samples.json").then(function(data){
-    wfreq = data.metadata.map(person => person.wfreq);
-    console.log(wfreq);
-}); */
+function optionChanged(newSample) {
+    buildMetadata(newSample);
+    //buildCharts(newSample);
+    }
 
-/* //sort the wfreq array in descending orde
-d3.json("samples.json").then(function(data){
-    wfreq = data.metadata.map(person =>person.wfreq).sort((a,b) => b - a);
-    console.log(wfreq);
-}); */
+/* function buildMetadata(sample) {
+    d3.json("samples.json").then((data) => {
+        var metadata = data.metadata;
+        var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
+        var result = resultArray[0];
+        var PANEL = d3.select("#sample-metadata");
 
-/* //delete null values
-d3.json("samples.json").then(function(data){
-    wfreq = data.metadata.map(person => person.wfreq).sort((a,b) => b - a);
-    filteredWfreq = wfreq.filter(element => element !=null);
-    console.log(filteredWfreq);
-}); */
-
-//display the metadata of any individual from the dataset
-let i = 10
-d3.json("samples.json").then(function(data){
-    firstPerson = data.metadata[i];
-    Object.entries(firstPerson).forEach(([key, value]) => {console.log(key + ': ' + value);});
+    PANEL.html("");
+    PANEL.append("h6").text(result.location);
 });
+} */
+function buildMetadata(sample) {
+    d3.json("samples.json").then((data) => {
+        var metadata = data.metadata;
+        var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
+        var result = resultArray[0];
+        var PANEL = d3.select("#sample-metadata");
+
+    PANEL.html("");
+    //this took my for ever and I f'ing did it I am so proud of myself
+    Object.entries(result).forEach(([key, value]) => {PANEL.append("h6").text(key.toUpperCase() + ': ' + value);});
+});
+}
+
+/* d3.selectAll("#dropdownMenu").on("change", updatePlotly);
+
+function updatePlotly() {
+    var dropdownMenu = d3.select("#dropdownMenu");
+    var dataset = dropdownMenu.property("value");
+
+    var xData = [1, 2, 3, 4, 5];
+    var yData = [];
+
+    if (dataset === 'dataset1') {
+        yData = [1, 2, 4, 8, 16];
+    };
+
+    if (dataset === 'dataset2') {
+        yData = [1, 10, 100, 1000, 10000];
+    };
+
+    var trace = {
+        x: [xData],
+        y: [yData],
+    };
+    
+    Plotly.restyle("plot", trace);
+}; */
+
+init();
