@@ -1,37 +1,34 @@
-// Sort the data array using the greekSearchResults value
-data.sort(function(a, b) {
-  return parseFloat(b.greekSearchResults) - parseFloat(a.greekSearchResults);
+//set jason file name to a constant 
+const samples = "samples.json";
+
+/* //verify data is recived 
+d3.json(samples).then(function(data){
+    console.log(data);
+});  */
+
+/* //only the wfreq, or the weekly belly button washing frequency, of each person into a new array
+//used map function to iterate through through all items 
+d3.json("samples.json").then(function(data){
+    wfreq = data.metadata.map(person => person.wfreq);
+    console.log(wfreq);
+}); */
+
+/* //sort the wfreq array in descending orde
+d3.json("samples.json").then(function(data){
+    wfreq = data.metadata.map(person =>person.wfreq).sort((a,b) => b - a);
+    console.log(wfreq);
+}); */
+
+/* //delete null values
+d3.json("samples.json").then(function(data){
+    wfreq = data.metadata.map(person => person.wfreq).sort((a,b) => b - a);
+    filteredWfreq = wfreq.filter(element => element !=null);
+    console.log(filteredWfreq);
+}); */
+
+//display the metadata of any individual from the dataset
+let i = 10
+d3.json("samples.json").then(function(data){
+    firstPerson = data.metadata[i];
+    Object.entries(firstPerson).forEach(([key, value]) => {console.log(key + ': ' + value);});
 });
-
-// Slice the first 10 objects for plotting
-data = data.slice(0, 10);
-
-// Reverse the array due to Plotly's defaults
-data = data.reverse();
-
-// Trace1 for the Greek Data
-var trace1 = {
-  x: data.map(row => row.greekSearchResults),
-  y: data.map(row => row.greekName),
-  text: data.map(row => row.greekName),
-  name: "Greek",
-  type: "bar",
-  orientation: "h"
-};
-
-// data
-var data = [trace1];
-
-// Apply the group bar mode to the layout
-var layout = {
-  title: "Greek gods search results",
-  margin: {
-    l: 100,
-    r: 100,
-    t: 100,
-    b: 100
-  }
-};
-
-// Render the plot to the div tag with id "plot"
-Plotly.newPlot("plot", data, layout);
